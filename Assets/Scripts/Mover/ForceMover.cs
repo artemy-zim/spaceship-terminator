@@ -32,7 +32,7 @@ public class ForceMover : Mover
 
     private void OnEnable()
     {
-        _input.OnExecuted += Move;
+        _input.Executed += Move;
     }
 
     private void Update()
@@ -42,19 +42,18 @@ public class ForceMover : Mover
 
     private void OnDisable()
     {
-        _input.OnExecuted -= Move;
+        _input.Executed -= Move;
+    }
+
+    public void Reset()
+    {
+        _rigidbody.velocity = Vector2.zero;
+        transform.SetPositionAndRotation(_startPosition, Quaternion.identity);
     }
 
     protected override void Move()
     {
         _rigidbody.velocity = new Vector2(Speed, _force);
         transform.rotation = _maxRotation;
-    }
-
-    public void Reset()
-    {
-        _rigidbody.velocity = Vector2.zero;
-        transform.position = _startPosition;
-        transform.rotation = Quaternion.identity;
     }
 }

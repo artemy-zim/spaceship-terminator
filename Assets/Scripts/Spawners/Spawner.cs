@@ -6,15 +6,15 @@ public abstract class Spawner<T> : MonoBehaviour where T : MonoBehaviour, ISpawn
 
     protected ObjectPool<T> Pool => _pool;
 
+    public virtual void Reset()
+    {
+        _pool.Reset();
+    }
+
     protected abstract void Spawn();
 
     protected virtual void Release(T spawnable)
     {
         _pool.PutObject(spawnable);
-    }
-
-    public virtual void Reset()
-    {
-        _pool.Reset();
     }
 }

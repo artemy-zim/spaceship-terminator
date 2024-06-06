@@ -3,11 +3,11 @@ using UnityEngine;
 
 public class InputShoot : BaseInput
 {
-    public event Action OnExecuted;
+    public event Action Executed;
 
     public override void Execute()
     {
         if(Input.GetKeyDown(InputKeyCodesData.Shoot))
-            OnExecuted?.Invoke();
+            Executed?.Invoke();
     }
 }

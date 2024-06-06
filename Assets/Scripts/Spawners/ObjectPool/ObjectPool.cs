@@ -8,6 +8,14 @@ public class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour
 
     private Queue<T> _pool;
 
+    public void Reset()
+    {
+        _pool.Clear();
+
+        foreach (Transform child in _container)
+            Destroy(child.gameObject);
+    }
+
     private void Awake()
     {
         _pool = new Queue<T>();
@@ -30,13 +38,5 @@ public class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour
     {
         _pool.Enqueue(spawnable);
         spawnable.gameObject.SetActive(false);
-    }
-
-    public void Reset()
-    {
-        _pool.Clear();
-
-        foreach(Transform child in _container)
-            Destroy(child.gameObject);
     }
 }

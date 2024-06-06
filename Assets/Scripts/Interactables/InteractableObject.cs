@@ -6,12 +6,12 @@ public abstract class InteractableObject : MonoBehaviour, IInteractable
 
     private void OnEnable()
     {
-        _triggerHandler.OnTriggerEntered += ProcessTrigger;
+        _triggerHandler.TriggerEntered += ProcessTrigger;
     }
 
     private void OnDisable()
     {
-        _triggerHandler.OnTriggerEntered -= ProcessTrigger;
+        _triggerHandler.TriggerEntered -= ProcessTrigger;
     }
 
     protected abstract void ProcessTrigger(IInteractable interactable);

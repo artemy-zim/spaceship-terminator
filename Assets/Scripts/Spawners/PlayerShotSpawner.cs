@@ -6,14 +6,20 @@ public class PlayerShotSpawner : Spawner<PlayerShot>
     [SerializeField] private InputShoot _input;
     [SerializeField] private ShotPoint _shotPoint;
 
+    public override void Reset()
+    {
+        _score.Reset();
+        base.Reset();
+    }
+
     private void OnEnable()
     {
-        _input.OnExecuted += Spawn;
+        _input.Executed += Spawn;
     }
 
     private void OnDisable()
     {
-        _input.OnExecuted -= Spawn;
+        _input.Executed -= Spawn;
     }
 
     protected override void Spawn()
@@ -22,25 +28,19 @@ public class PlayerShotSpawner : Spawner<PlayerShot>
 
         shot.transform.SetPositionAndRotation(_shotPoint.transform.position, _shotPoint.transform.rotation);
         shot.OnSpawn();
-        shot.OnHit += Release;
-        shot.OnEnemyHit += HandleEnemyHit;
-    }
-
-    private void HandleEnemyHit()
-    {
-        _score.Add();
+        shot.Hit += Release;
+        shot.EnemyHit += OnEnemyHit;
     }
 
     protected override void Release(PlayerShot shot)
     {
-        shot.OnHit -= Release;
-        shot.OnEnemyHit -= HandleEnemyHit;
+        shot.Hit -= Release;
+        shot.EnemyHit -= OnEnemyHit;
         base.Release(shot);
     }
 
-    public override void Reset()
+    private void OnEnemyHit()
     {
-        _score.Reset();
-        base.Reset();
+        _score.Add();
     }
 }

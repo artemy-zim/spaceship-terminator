@@ -2,7 +2,7 @@ using System;
 
 public class StartScreen : Window
 {
-    public event Action OnPlayButtonClicked;
+    public event Action PlayButtonClicked;
 
     public override void Close()
     {
@@ -18,6 +18,6 @@ public class StartScreen : Window
 
     protected override void OnButtonClick()
     {
-        OnPlayButtonClicked?.Invoke();
+        PlayButtonClicked?.Invoke();
     }
 }

@@ -2,7 +2,7 @@ using System;
 
 public class EndGameScreen : Window
 {
-    public event Action OnRestartButtonClicked;
+    public event Action RestartButtonClicked;
 
     public override void Close()
     {
@@ -18,6 +18,6 @@ public class EndGameScreen : Window
 
     protected override void OnButtonClick()
     {
-        OnRestartButtonClicked?.Invoke();
+        RestartButtonClicked?.Invoke();
     }
 }

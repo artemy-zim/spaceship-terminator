@@ -11,17 +11,39 @@ public class EnemyShotSpawner : Spawner<EnemyShot>
     private readonly Dictionary<EnemyShip, Coroutine> _onShootCoroutines = new Dictionary<EnemyShip, Coroutine>();
     private Vector2 _nextPosition;
 
+    public override void Reset()
+    {
+        StopAllCoroutines();
+        _onShootCoroutines.Clear();
+        base.Reset();
+    }
+
     private void OnEnable()
     {
-        _shipSpawner.OnShipSpawned += HandleShipSpawn;
+        _shipSpawner.ShipSpawned += OnShipSpawned;
     }
 
     private void OnDisable()
     {
-        _shipSpawner.OnShipSpawned -= HandleShipSpawn;
+        _shipSpawner.ShipSpawned -= OnShipSpawned;
     }
 
-    private void HandleShipSpawn(EnemyShip ship)
+    protected override void Spawn()
+    {
+        EnemyShot shot = Pool.GetObject();
+
+        shot.transform.position = _nextPosition;
+        shot.OnSpawn();
+        shot.Hit += Release;
+    }
+
+    protected override void Release(EnemyShot enemyShot)
+    {
+        enemyShot.Hit -= Release;
+        base.Release(enemyShot);
+    }
+
+    private void OnShipSpawned(EnemyShip ship)
     {
         Coroutine coroutine = StartCoroutine(OnShootCoroutine(ship));
         UpdateShootCoroutine(coroutine, ship);
@@ -54,27 +76,5 @@ public class EnemyShotSpawner : Spawner<EnemyShot>
 
             yield return wait;
         }
-    }
-
-    protected override void Spawn()
-    {
-        EnemyShot shot = Pool.GetObject();
-
-        shot.transform.position = _nextPosition;
-        shot.OnSpawn();
-        shot.OnHit += Release;
-    }
-
-    protected override void Release(EnemyShot enemyShot)
-    {
-        enemyShot.OnHit -= Release;
-        base.Release(enemyShot);
-    }
-
-    public override void Reset()
-    {
-        StopAllCoroutines();
-        _onShootCoroutines.Clear();
-        base.Reset();
     }
 }

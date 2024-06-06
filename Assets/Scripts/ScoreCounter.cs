@@ -5,17 +5,17 @@ public class ScoreCounter : MonoBehaviour
 {
     private int _score;
 
-    public event Action<int> OnScoreChanged;
+    public event Action<int> ScoreChanged;
 
     public void Add()
     {
         _score++;
-        OnScoreChanged?.Invoke(_score);
+        ScoreChanged?.Invoke(_score);
     }
 
     public void Reset()
     {
         _score = 0;
-        OnScoreChanged?.Invoke(_score);
+        ScoreChanged?.Invoke(_score);
     }
 }
